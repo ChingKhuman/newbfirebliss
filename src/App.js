@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {Route , BrowserRouter, Routes, Navigate} from 'react-router-dom'
+import Homepage from "./pages/Homepage";
+import ProductInfo from "./pages/ProductInfo"
+import CartPage from "./pages/CartPage"
+import Loginpage from "./pages/LoginPage"
+import RegisterPage from "./pages/RegisterPage"
+
+import './stylesheets/Layout.css'
+import './stylesheets/products.css'
+import OrderPage from "./pages/OrderPage";
+//import './stylesheets/authentication.css'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <div>
+   <BrowserRouter>
+     <Routes>
+      <Route path="/" exact element= {<ProtectedRotes><Homepage /></ProtectedRotes>} />
+      <Route path="/productinfo/:productid" exact element= {<ProtectedRotes><ProductInfo /></ProtectedRotes>} />
+      <Route path="/cart" exact element= {<ProtectedRotes><CartPage /></ProtectedRotes>} />
+      <Route path="/orders" exact element= {<ProtectedRotes><OrderPage /></ProtectedRotes>} />
+      <Route path="/login" exact element= {<Loginpage />} />
+      <Route path="/register" exact element= {<RegisterPage />} />
+     </Routes>
+   </BrowserRouter>
+     
+   </div>
+    
+ 
   );
 }
 
 export default App;
+
+export const ProtectedRotes=({children}) =>{
+  if(localStorage.getItem('currentUser')){
+    return children
+  }
+  else{
+    return(
+    <Navigate to='/login'/>
+    )
+  }
+}
